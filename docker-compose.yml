@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  mongo_db:
+    image: mongo:7.0-jammy
+    ports: 
+      - "27010:27017"
+
+    container_name: mongodb-for-tests
+    volumes:
+      - /data/db
+
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: student
+      MONGO_INITDB_ROOT_PASSWORD: 1234
