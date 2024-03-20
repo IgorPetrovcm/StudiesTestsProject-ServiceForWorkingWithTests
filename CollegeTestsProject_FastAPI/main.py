@@ -1,10 +1,9 @@
-import os
-import sys 
+from fastapi import FastAPI, Body
+from fastapi import responses
+from fastapi.encoders import jsonable_encoder
 
-sys.path.append("./Environment")
+webApp = FastAPI()
 
-from Environment import Environment
-
-env = Environment("grgrewg")
-
-print(env.pathToAppSettings)
+@webApp.post("/createtest/")
+def createTest(data = Body()):
+    print(data)
