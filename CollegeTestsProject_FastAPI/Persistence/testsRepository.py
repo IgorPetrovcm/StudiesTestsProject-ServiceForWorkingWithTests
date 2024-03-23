@@ -4,16 +4,14 @@ from bson import json_util
 import json
 sys.path.append("../Models")
 
-from Models.listQuestions import ListQuestions
+from Models.test import Test
 from Models.question import Question
 
 class TestRepository:
     def __init__(self, context : MongoClient):
         self.__context : MongoClient = context
 
-    def create_test(self, test: ListQuestions):
-        db = self.__context["tests"]
-
+    def __test_to_json_parse(test : Test) -> str:
         questions_json = ""
         i = 1
         for question in test.questions:
@@ -25,9 +23,12 @@ class TestRepository:
 
         title_json = "\"title\": \"" + test.title + "\"" 
 
-        json_data = "{" + title_json + "," + "\"questions\":" + "[" + questions_json + "]" + "}"
+        return "{" + title_json + "," + "\"questions\":" + "[" + questions_json + "]" + "}"
 
-        db["tests"].insert_one(json.loads(json_data))
+    def create_test(self, test: Test):
+        db = self.__context["tests"]
+
+        db["tests"].insert_one(json.loads(self.__test_to_json_parse(test)))
 
     def get_titles(self):
         db = self.__context["tests"]
@@ -38,4 +39,11 @@ class TestRepository:
             titles.append(test["title"])
 
         return titles
+    
+    def get_test(self, title : str):
+        db = self.__context["tests"]
+        cursor = db["tests"].find({"title": title})
+
+        for key in cursor:
+            return key
         
