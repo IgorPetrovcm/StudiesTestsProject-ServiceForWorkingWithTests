@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Body
-from fastapi import responses
-from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
+import json
 import pydantic
 from pymongo import MongoClient
 
@@ -15,8 +15,14 @@ repository = TestRepository(MongoClient(appEnvironmetn.get_appsetting_value("Con
 webApp = FastAPI()
 
 @webApp.post("/createtest/")
-def createTest(data: Question):
+def create_test(data: ListQuestions):
     try:
         repository.create_test(data)
     except pydantic.ValidationError as ex:
         print(ex.errors())
+
+@webApp.get("/gettitles/")
+def get_titles():
+    titles = repository.get_titles()
+    response_json = json.dumps(titles, default=lambda o: o.__dict__)
+    return JSONResponse(response_json)
