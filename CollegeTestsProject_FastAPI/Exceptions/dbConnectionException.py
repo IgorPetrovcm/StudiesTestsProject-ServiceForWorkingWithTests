@@ -1,4 +1,4 @@
-class EnvironmentException(Exception):
+class DbConnectionException(Exception):
     def __init__(self, *args: object):
         if args[0] != None:
             self.__message = args[0]

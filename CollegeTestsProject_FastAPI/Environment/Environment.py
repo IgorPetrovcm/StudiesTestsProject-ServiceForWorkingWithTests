@@ -1,9 +1,10 @@
 import os
 import sys
+import json
 
-sys.path.append("./Exceptions")
+sys.path.append("../Exceptions")
 
-from EnvironmentException import EnvironmentException
+import environmentException
 
 sys.path.insert(1, os.path.join)
 
@@ -27,4 +28,9 @@ class Environment:
         if os.path.isdir(path):
             return True
         else:
-            raise EnvironmentException("The folder does not exists")
+            raise environmentException.EnvironmentException("The folder does not exists")
+        
+    def get_appsetting_value(self, key):
+        file = open(self.__pathToAppSettings, 'r')
+        appsettings_dict = json.loads(file.read())
+        return appsettings_dict[key]
