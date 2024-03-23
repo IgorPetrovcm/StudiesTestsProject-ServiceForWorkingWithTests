@@ -4,7 +4,7 @@ import json
 
 sys.path.append("../Exceptions")
 
-import environmentException
+from Exceptions.environmentException import EnvironmentException 
 
 sys.path.insert(1, os.path.join)
 
@@ -28,9 +28,10 @@ class Environment:
         if os.path.isdir(path):
             return True
         else:
-            raise environmentException.EnvironmentException("The folder does not exists")
+            raise EnvironmentException("The folder does not exists")
         
     def get_appsetting_value(self, key):
-        file = open(self.__pathToAppSettings, 'r')
+        file = open(self.__pathToAppSettings + "\\appsettings.json", 'r')
         appsettings_dict = json.loads(file.read())
-        return appsettings_dict[key]
+        connectionStrings = appsettings_dict["ConnectionToDatabaseString"]
+        return connectionStrings[key]

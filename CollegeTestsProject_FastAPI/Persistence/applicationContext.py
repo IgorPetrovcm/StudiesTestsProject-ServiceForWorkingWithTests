@@ -10,5 +10,7 @@ class ApplicationContext:
         self.__connectionString = connectionString
         self.__context = MongoClient(connectionString)
         
-    
+    @property
+    def context(self):
+        return self.__context
             
