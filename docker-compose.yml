@@ -10,5 +10,15 @@ services:
       - /data/db
 
     environment:
-      MONGO_INITDB_ROOT_USERNAME: student
-      MONGO_INITDB_ROOT_PASSWORD: 1234
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+
+  fastapi:
+    build: ./FastAPI
+    ports:
+      - 8001:8000
+    container_name: fastapi-for-tests
+    environment:
+      - CONNECTION_TO_MONGODB=${CONNECTION_TO_MONGODB}
+    depends_on:
+      - mongo_db
